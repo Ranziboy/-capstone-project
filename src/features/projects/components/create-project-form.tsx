@@ -12,24 +12,24 @@ import { useRef } from "react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import Image from "next/image"
 import { ImageIcon } from "lucide-react"
-import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { useCreateProject } from "../api/use-create-projects"
+import { useCreateProject } from "../api/use-create-project"
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id"
+import { useRouter } from "next/navigation"
 
 interface CreateProjectFormProps{
     onCancel?: ()=> void
 };
 
 export const CreateProjectForm = ({onCancel}:CreateProjectFormProps) =>{
-    const workspaceId = useWorkspaceId();
     const router = useRouter();
+    const workspaceId = useWorkspaceId();
     const { mutate, isPending } = useCreateProject();
     
-    const inputRef = useRef<HTMLInputElement>(null)
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const form = useForm<z.infer<typeof createProjectSchema>>({
-        resolver: zodResolver(createProjectSchema),
+        resolver: zodResolver(createProjectSchema.omit({workspaceId: true})),
         defaultValues:{
             name: ""
         }
@@ -42,12 +42,12 @@ export const CreateProjectForm = ({onCancel}:CreateProjectFormProps) =>{
         };
 
         mutate({form: finalValues},{
-            onSuccess:()=>{
+            onSuccess:( {data} )=>{
                 form.reset();
-             
+                router.push(`/workspaces/${workspaceId}/projects/${data.$id}`)
             }
-        })
-    }
+        });
+    };
     const handleImageChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
         const file = e.target.files?.[0];
         if (file){
