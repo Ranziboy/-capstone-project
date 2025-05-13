@@ -13,9 +13,9 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import Image from "next/image"
 import { ImageIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { useCreateProject } from "../api/use-create-project"
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id"
 import { useRouter } from "next/navigation"
+import { useCreateProject } from "@/features/tasks/api/use-create-task"
 
 interface CreateProjectFormProps{
     onCancel?: ()=> void

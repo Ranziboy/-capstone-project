@@ -3,10 +3,10 @@ import {client} from "@/lib/rpc";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {toast} from "sonner";
 
-type ResponseType = InferResponseType<typeof client.api.tasks["$post"], 200>;
-type RequestType = InferRequestType<typeof client.api.tasks["$post"]>;
+type ResponseType = InferResponseType<typeof client.api.projects["$post"], 200>;
+type RequestType = InferRequestType<typeof client.api.projects["$post"]>;
 
-export const useCreateTask = () => {
+export const useCreateProject = () => {
     const queryClient = useQueryClient();
 
     const mutation = useMutation<
@@ -14,22 +14,22 @@ export const useCreateTask = () => {
         Error,
         RequestType
     >({
-        mutationFn: async ({json}) => {
-            const response = await client.api.tasks["$post"]({json});
+        mutationFn: async ({form,}) => {
+            const response = await client.api.projects["$post"]({form});
 
             if (!response.ok) {
-                throw new Error("Failed to create task");
+                throw new Error("Failed to create project");
             }
 
             return await response.json();
         },
         onSuccess: async () => {
-            toast.success("Task created successfully!");
-            queryClient.invalidateQueries({ queryKey: ["tasks"] });
+            toast.success("Project created successfully!");
+            queryClient.invalidateQueries({ queryKey: ["projects"] });
         },
         onError: (error) => {
             console.log(error);
-            toast.error("Failed to create task!");
+            toast.error("Failed to create project!");
         }
     });
 
