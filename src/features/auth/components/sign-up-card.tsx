@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { useForm } from "react-hook-form"
 import { registerSchema } from "../schemas"
 import { useRegister } from "../api/use-register"
+import { signUpWithGithub, signUpWithGoogle } from "@/lib/oauth"
 
 
 export const SignUpCard = () =>{
@@ -108,6 +109,7 @@ export const SignUpCard = () =>{
             </div>
             <CardContent className=" py-7 flex flex-col gap-y-4 space-y-4">
             <Button 
+            onClick={()=> signUpWithGoogle()}
             disabled={isPending}
             variant="secondary"
             size="lg"
@@ -117,6 +119,7 @@ export const SignUpCard = () =>{
                 Login with Google
             </Button>
             <Button 
+            onClick={()=> signUpWithGithub()}
             disabled={isPending}
             variant="secondary"
             size="lg"

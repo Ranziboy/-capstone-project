@@ -69,11 +69,7 @@ export const EditProjectForm = ({onCancel , initialValues}:EditProjectFormProps)
         };
 
         mutate({form: finalValues,param:{projectId: initialValues.$id}},
-            {
-            onSuccess:()=>{
-                form.reset();
-            }
-        })
+            )
     }
     const handleImageChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
         const file = e.target.files?.[0];
@@ -216,7 +212,7 @@ export const EditProjectForm = ({onCancel , initialValues}:EditProjectFormProps)
                         size="sm"
                         variant="destructive"
                         type="button"
-                        disabled={isPending}
+                        disabled={isPending || isDeletingProject}
                         onClick={handleDelete}
 
                         >

@@ -12,9 +12,18 @@ import { DataFilters } from "./data-filters"
 import { useTaskFilters } from "../hooks/use-task-filters"
 import { DataTable } from "./data-table"
 import { columns } from "./columns"
+import { DataKanban } from "./data-kanban"
+import { useCallback } from "react"
+import { TaskStatus } from "../types"
+import { useBulkUpdateTasks } from "../api/use-bulk-update-tasks"
+import { DataCalendar } from "./data-calendar"
+import { UseProjectId } from "@/features/projects/hooks/use-project-id"
 
+interface TaskViewSwitcherProps{
+    hideProjectFilter?:boolean;
+}
 
-export const TaskViewSwitcher = () => {
+export const TaskViewSwitcher = ({hideProjectFilter}:TaskViewSwitcherProps) => {
     const [{
         status,
         assigneeId,
@@ -30,14 +39,25 @@ const [view, setView ] =useQueryState(
 )
 
     const workspaceId = useWorkspaceId();
+    const paramProjectId = UseProjectId();
+    const { open } = useCreateTaskModal();
+
+    const { mutate: bulkUpdate } = useBulkUpdateTasks()
+
     const { data: tasks , isLoading: isLoadingTasks } = useGetTasks({
         workspaceId,
-        projectId,
+        projectId: paramProjectId || projectId,
         assigneeId,
         status,
         dueDate
     });
-    const { open } = useCreateTaskModal();
+
+    const onKanbanChange = useCallback((tasks:{ $id: string; status: TaskStatus; position: number;}[])=>{
+      bulkUpdate({
+        json: { tasks }
+      })
+    },[bulkUpdate])
+  
     return(
         <Tabs
         defaultValue={view}
@@ -71,7 +91,7 @@ const [view, setView ] =useQueryState(
                     </Button>
                 </div>
                 <DottedSeparator className="my-4" />
-                    <DataFilters/>
+                    <DataFilters hideProjectFilter={hideProjectFilter}/>
                 <DottedSeparator className="my-4" />
                 {isLoadingTasks ? (
                     <div className="w-full border rounded-lg h-[200px] flex flex-col items-center justify-center">
@@ -84,10 +104,10 @@ const [view, setView ] =useQueryState(
                     <DataTable columns={columns} data={tasks?.documents ?? []}/>
                 </TabsContent>
                 <TabsContent value="kanban" className="mt-0">
-                {JSON.stringify(tasks)}
+                <DataKanban onChange={onKanbanChange} data={tasks?.documents ?? []}/>
                 </TabsContent>
-                <TabsContent value="calendar" className="mt-0">
-                {JSON.stringify(tasks)}
+                <TabsContent value="calendar" className="mt-0 h-full pb-4">
+                <DataCalendar data={tasks?.documents ?? []} />
                 </TabsContent>
                 </>
                 )}

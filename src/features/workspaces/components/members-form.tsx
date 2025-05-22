@@ -75,7 +75,7 @@ export const MembersList =()=>{
                         <div className="flex items-center gap-2">
                             <MemberAvatar 
                             className="size-10"
-                            fallbackClassname="text-lg"
+                            fallbackClassName="text-lg"
                             name={member.name}  
                             />
                             <div className="flex flex-col ">

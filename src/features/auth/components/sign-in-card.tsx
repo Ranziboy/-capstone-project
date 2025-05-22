@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import Link from "next/link"
 import { loginSchema } from "../schemas"
 import { useLogin } from "../api/use-login"
+import { signUpWithGithub, signUpWithGoogle } from "@/lib/oauth";
 
 
 export const SignInCard = () =>{
@@ -82,6 +83,7 @@ export const SignInCard = () =>{
             </div>
             <CardContent className="py-7 flex flex-col gap-y-4 space-y-4">
             <Button 
+            onClick={()=> signUpWithGoogle()}
             disabled={isPending}
             variant="secondary"
             size="lg"
@@ -91,6 +93,7 @@ export const SignInCard = () =>{
                 Login with Google
             </Button>
             <Button 
+            onClick={()=> signUpWithGithub()}
             disabled={isPending}
             variant="secondary"
             size="lg"

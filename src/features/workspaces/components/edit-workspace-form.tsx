@@ -74,11 +74,7 @@ export const EditWorkspaceForm = ({onCancel , initialValues}:EditWorkSpaceFormPr
        
         resetInviteCode({
             param:{workspaceId: initialValues.$id}
-        },{
-            onSuccess: () => {
-                router.refresh();
-            }
-        })
+        },)
     }
 
     const onSubmit = (values:z.infer<typeof updateWorkspaceSchema>)=>{
@@ -88,11 +84,7 @@ export const EditWorkspaceForm = ({onCancel , initialValues}:EditWorkSpaceFormPr
         };
 
         mutate({form: finalValues,param:{workspaceId: initialValues.$id}},
-            {
-            onSuccess:()=>{
-                form.reset();
-            }
-        })
+            )
     }
     const handleImageChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
         const file = e.target.files?.[0];

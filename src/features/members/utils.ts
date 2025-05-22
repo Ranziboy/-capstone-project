@@ -1,9 +1,10 @@
 import { DATABASE_ID, MEMBERS_ID } from "@/config"
 import {Query, type Databases } from "node-appwrite"
+import { Member } from "./types"
 
 interface GetMemberProps{
     databases: Databases,
-    workspaceId: string,
+    workspaceId: string ,
     userId: string
     
 }

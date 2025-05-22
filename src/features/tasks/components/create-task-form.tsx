@@ -26,7 +26,6 @@ interface CreateTaskFormProps{
 };
 
 export const CreateTaskForm = ({onCancel , memberOptions, projectOptions}:CreateTaskFormProps) =>{
-    const router = useRouter();
     const workspaceId = useWorkspaceId();
     const { mutate, isPending } = useCreateTask();
     const form = useForm<z.infer<typeof createTaskSchema>>({
